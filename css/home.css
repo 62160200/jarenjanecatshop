@@ -1,0 +1,42 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.banner {
+    margin-top: 3.5rem;
+    background-image: url("/jop/cat_imge/cat_background.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: center;
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.text-banner {
+    color: white;
+    font-size: 250%;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: 1rem;
+    font-family: 'Mitr', sans-serif;
+}
+
+.text-banner1 {
+    color: white;
+    font-size: 80%;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin-top: 30px;
+    font-family: 'Mitr', sans-serif;
+    /* margin-bottom: 1rem; */
+}
+
+.center-button {
+    position: absolute;
+    bottom: 7rem;
+    font-family: 'Mitr', sans-serif;
+}

@@ -1,0 +1,68 @@
+.fixed-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 250px;
+    background-color: #403e3e;
+    padding: 1rem;
+    overflow-y: hidden;             /* ไม่ให้แสดง scrollbar แนวตั้ง */
+    overflow-x: hidden;             /* ไม่ให้แสดง scrollbar แนวนอน */
+    z-index: 1000;
+    transition: width 0.3s;
+}
+
+.fixed-sidebar.collapsed {
+    width: 100px;
+}
+
+.fixed-sidebar.collapsed .text {
+    display: none;
+}
+
+.collapsed {
+    width: 60px;
+    /* ปรับขนาดเล็กลงเพื่อให้เห็นแค่ icon */
+
+}
+
+.collapsed .fs-5,
+.collapsed .fs-4 {
+    display: none;
+    /* ซ่อนข้อความเมื่อ sidebar ย่อ */
+}
+
+.collapsed .nav-link {
+    justify-content: center;
+    /* จัดตำแหน่ง icon ให้อยู่ตรงกลางเมื่อ sidebar ย่อ */
+}
+
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background-color: #ffffff;
+    z-index: 1001;
+    padding: 0.5rem 1rem;
+    padding-bottom: 10px;
+    left: 100px;
+    transition: left 0.3s; 
+}
+
+.top-bar .search-form {
+    float: right;
+}
+.icon-container {
+    display: inline-block;
+    background-color: #000;
+    border-radius: 100%;
+    padding: 1px;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.icon-container .bi-bag {
+    color: #ffffff;
+}
