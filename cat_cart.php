@@ -49,6 +49,35 @@ center{
 .sum{
     margin-bottom: 0px;
 }
+body{
+    font-family: 'Mitr', sans-serif;
+}
+.card {
+    /* border: none; */
+    border-radius: 10px;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-bottom: 1rem;
+    /* box-shadow: 0 0 0 0 rgba(0,0,0,0); */
+}
+
+.col-md-3{
+    margin-left: 6rem;
+
+}
+.col-md-5{
+    margin-left: 2rem;
+}
+.g-0{
+    margin-left:10px;
+    margin-right: 10px;
+}
+.img{
+    padding-top: 1rem;
+    padding-bottom: 1rem; 
+    margin-left: 0.5rem;
+    margin-right: 2rem;
+}
 
 </style>
 <body>
@@ -59,10 +88,29 @@ center{
                 <!-- <h2>รายการสินค้าที่เลือก</h2> -->
                 <!-- Add your product cards here -->
                 <div class="card mb-3">
-                    <div class="card-body">
-                        <!-- Product details -->
+                    <div class="row g-0">
+                        <div class="col-md-2">
+                            <img src="cat_imge\cat6.png" class="img" alt="Product Image" class="img-fluid" style="max-width: 100%; height: 100%;">
+                        </div>
+                        <div class="col-md-5">
+                            <div class="card-body">
+                                <h4 class="card-title"><b>น้องเหนียง</b></h4>
+                                <p class="card-text" style="font-size: 13px;line-height: 1px;">พันธุ์บริติช ชอร์ตแฮร์</p>
+                                <h6 class="card-title" style="font-size: 18px;"><b>รายละเอียด</b></h6>
+                                <p class="card-text" style="font-size: 13px;line-height: 1px;">หนุ่มมีไข่อยู่ครบ2 ใบ</p>
+                                <p class="card-text" style="font-size: 13px;line-height: 1px;">British ShortHair NY11</p>
+                                <p class="card-text" style="font-size: 13px;line-height: 1px;">DOB 12/06/2019  น้ำหนัก5.5kgs.</p>
+
+                            </div>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <!-- <div class="card-footer text-end"> -->
+                                <h3><b>40,000 ฿</b></h3>
+                            <!-- </div> -->
+                        </div>
                     </div>
                 </div>
+
                 <!-- Repeat the card for other products -->
             </div>
             <div class="col-md-4">
@@ -90,7 +138,7 @@ center{
                             <p><h3 ><b>43,000 ฿</b></h3></p>
                         </div>
                         <center>
-                            <button class="btn btn-primary">ยืนยันคำสั่งซื้อ</button>
+                            <button class="btn btn-dark">ยืนยันคำสั่งซื้อ</button>
                         </center>
                     </div>
                 </div>
