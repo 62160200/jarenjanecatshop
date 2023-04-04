@@ -39,7 +39,7 @@ include 'layout.php';
         font-size: 50px;
         font-family: 'Mitr', sans-serif;
         color: #000000;
-        margin-top: 50px;
+        margin-top: 60px;
         margin-left: 8rem;
         margin-bottom: 50px;
     }
@@ -69,10 +69,7 @@ include 'layout.php';
 
 <body>
     <h1 class="title"><b>น้องเหนียง</b></h1>
-
-    <div class="album py-10 bg-light">
-
-
+    <div class="album bg-light">
         <div class="container mt-5">
             <div class="row">
                 <div class="col-md-2">

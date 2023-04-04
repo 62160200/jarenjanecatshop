@@ -105,13 +105,16 @@ session_start();
         <form class="search-form ms-auto">
             <input class="form-control" type="search" placeholder="ค้นหา" aria-label="ค้นหา">
         </form>
-        <div class="icon-container">
             <?php
             if (isset($_SESSION['loggedin'])) {
-                echo '<a href="cat_cart.php" class="btn"><b><i class="bi bi-bag"></i></b></a>';
+                echo '  <div class="icon-container">
+                            <a href="cat_cart.php" class="btn">
+                                <b><i class="bi bi-bag"></i></b>
+                            </a>
+                        </div>';
             }
             ?>
-        </div>
+
     </div>
 
     <script>

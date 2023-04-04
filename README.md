@@ -1,4 +1,4 @@
-CREATE DATABASE catshoplover;
+`CREATE DATABASE catshoplover;
 
 CREATE TABLE users (
   ID INT NOT NULL AUTO_INCREMENT,
@@ -8,4 +8,4 @@ CREATE TABLE users (
   phone VARCHAR(20) NOT NULL,
   role VARCHAR(20) NOT NULL,
   PRIMARY KEY (id)
-);
+);`
