@@ -3,6 +3,7 @@ include 'layout.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +15,7 @@ include 'layout.php';
 
     </style>
 </head>
+
 <body>
     <div class="banner">
         <h1 class="text-banner">JARAREN CAT LOVER SHOP</h1>
@@ -21,4 +23,5 @@ include 'layout.php';
         <a href="cat_shop.php" class="btn btn-primary center-button">SHOP</a>
     </div>
 </body>
+
 </html>
