@@ -1,3 +1,13 @@
+<?php
+// Include config file
+require_once "config/db.php";
+if (isset($_SESSION['loggedin'])) {
+    header("Location: index.php");
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,6 +19,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous">
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300&display=swap" rel="stylesheet">
@@ -20,25 +31,27 @@
 <body>
     <div class="m-0 p-0" style="display: flex; height: 100vh; width: 100%;">
         <div class="left">
+            <a href="index.php" style="text-decoration:none;">
+                <h2 style="color: #ffffff;"><b>JARAREN CAT LOVE SHOP</b></h2>
+            </a>
 
-            <h2 style="color: #ffffff;"><b>JARAREN CAT LOVE SHOP</b></h2>
             <p style="color: #ffffff;">เว็บส่งน้องแมว JararenFamiry</p>
         </div>
         <div class="right">
             <!-- ใส่ฟอร์มล็อกอินหรือเนื้อหาด้านขวาที่นี่ -->
 
             <div class="card-body">
-                <form action="login.php" method="post">
+                <form action="" method="post">
                     <div class="mb-3">
                         <label for="username" class="form-label"><b>Username</b></label>
-                        <input type="text" class="form-control" id="username" name="username">
+                        <input type="text" class="form-control" id="username" name="username" required>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label"><b>Password</b></label>
-                        <input type="password" class="form-control" id="password" name="password">
+                        <input type="password" class="form-control" id="password" name="password" required>
                     </div>
                     <div class="mb-3">
-                        <a type="submit" class="btn btn-primary">Login</a>
+                        <button type="submit" class="btn btn-primary">Login</button>
                     </div>
                 </form>
                 <div class="mb-3">
@@ -48,5 +61,70 @@
         </div>
     </div>
 </body>
+<?php
 
-</html>
+if (isset($_POST['username']) && isset($_POST['password'])) {
+
+    $sql = "SELECT * FROM users WHERE username = :username";
+
+    if ($stmt = $pdo->prepare($sql)) {
+        $stmt->bindParam(":username", $param_username, PDO::PARAM_STR);
+
+        $param_username = trim($_POST["username"]);
+        $param_password = trim($_POST["password"]);
+
+        if ($stmt->execute()) {
+            if ($row = $stmt->fetch()) {
+                $hashed_password = $row['password'];
+                if (password_verify($param_password, $hashed_password)) {
+                    session_start();
+                    $_SESSION['loggedin'] = true;
+                    $_SESSION['username'] = $param_username;
+                    $_SESSION['id'] = $row['id'];
+                    $_SESSION['role'] = $row['role'];
+                    echo "<script>Swal.fire({
+                        icon: 'success',
+                        title: 'Login Success',
+                        text: 'Welcome to Cat Love Shop',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function() {
+                        window.location = 'index.php';
+                    });</script>";
+                } else {
+                    echo "<script>Swal.fire({
+                        icon: 'error',
+                        title: 'Login Failed',
+                        text: 'Username or Password is incorrect',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function() {
+                        window.location = 'login.php';
+                    });</script>";
+                }
+            } else {
+                echo "<script>Swal.fire({
+                    icon: 'error',
+                    title: 'Login Failed',
+                    text: 'Username or Password is incorrect',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(function() {
+                    window.location = 'login.php';
+                });</script>";
+            }
+        } else {
+            echo "<script>Swal.fire({
+                icon: 'error',
+                title: 'Login Failed',
+                text: 'Something went wrong',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(function() {
+                window.location = 'login.php';
+            });</script>";
+        }
+        unset($stmt);
+    }
+    unset($pdo);
+}

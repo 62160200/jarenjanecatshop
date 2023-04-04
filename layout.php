@@ -1,3 +1,11 @@
+<?php
+// Include config file
+require_once "config/db.php";
+session_start();
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,7 +33,14 @@
 
         <a href="#" class="d-flex align-items-center text-white text-decoration-none " aria-expanded="false">
             <img src="https://github.com/mdo.png" alt="" width="40" height="40" class="rounded-circle me-2">
-            <strong class="text" style="color: #989696;">Jararen CatLoveShop</strong>
+            <?php
+            if (isset($_SESSION['loggedin'])) {
+                echo '<strong class="text" style="color: #989696;">' . $_SESSION['username'] . '</strong>';
+            } else {
+                echo '<strong class="text" style="color: #989696;">Jararen CatLoveShop</strong>';
+            }
+            ?>
+            <!-- <strong class="text" style="color: #989696;">Jararen CatLoveShop</strong> -->
         </a>
 
         <hr style="color: white;">
@@ -48,14 +63,25 @@
             <br>
             <h5 class="text"><b style="color: #989696;">Setting</b></h5>
             <li>
-                <a href="login.php" class="nav-link " style="color: #989696;">
-                    <h4><i class="bi bi-person-fill"></i><span class="text">&nbsp;&nbsp;</span><span class="fs-5 text">Login</span></h4>
-                </a>
-            </li>
-            <li>
-                <a href="" class="nav-link " style="color: #989696;">
-                    <h4><i class="bi bi-box-arrow-in-right"></i><span class="text">&nbsp;&nbsp;</span><span class="fs-5 text">Logout</span></h4>
-                </a>
+                <?php
+                if (isset($_SESSION['loggedin'])) {
+                    echo '  <form action="logout.php" method="post">
+                                <button type="submit" name="logout" class="btn" style="color: #989696;">
+                                    <h4><i class="bi bi-person-fill"></i><span class="text">&nbsp;&nbsp;</span><span class="fs-5 text">Logout</span></h4>
+                                </button>
+                            </form>';
+                } else {
+                    echo '  <a href="login.php" class="nav-link " style="color: #989696;">
+                                <h4>
+                                <i class="bi bi-person-fill"></i>
+                                <span class="text">&nbsp;&nbsp;</span>
+                                    <span class="fs-5 text">
+                                        Login
+                                    </span>
+                                </h4>
+                            </a>';
+                }
+                ?>
             </li>
         </ul>
         <hr style="color: #ffffff;">
@@ -80,7 +106,11 @@
             <input class="form-control" type="search" placeholder="ค้นหา" aria-label="ค้นหา">
         </form>
         <div class="icon-container">
-            <a href="cat_cart.php" class="btn"><b><i class="bi bi-bag"></i></b></a>
+            <?php
+            if (isset($_SESSION['loggedin'])) {
+                echo '<a href="cat_cart.php" class="btn"><b><i class="bi bi-bag"></i></b></a>';
+            }
+            ?>
         </div>
     </div>
 
@@ -90,7 +120,6 @@
         if (element.classList.contains("collapsed")) {
             topBar.style.left = "100px";
         } else {
-            console.log("Element ไม่มีคลาส 'collapsed'");
             topBar.style.left = "250px";
         }
 

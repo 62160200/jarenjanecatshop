@@ -6,7 +6,7 @@ body, html {
 
 .banner {
     margin-top: 3.5rem;
-    background-image: url("/jop/cat_imge/cat_background.png");
+    background-image: url(../cat_imge/cat_background.png);
     background-repeat: no-repeat;
     background-size: 100%;
     background-position: center;
