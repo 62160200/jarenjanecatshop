@@ -24,24 +24,29 @@ session_start();
     <link rel="stylesheet" href="./css/layout.css">
 </head>
 <style>
-
+.bi-person-circle{
+    font-size: 1.8rem;
+    color: #989696;
+    margin-left: 1rem;
+}
 
 </style>
 
 <body style="font-family: 'Mitr', sans-serif; ">
     <div class="fixed-sidebar d-flex flex-column flex-shrink-0 p-3" id="sidebar">
-
+        
         <a href="#" class="d-flex align-items-center text-white text-decoration-none " aria-expanded="false">
-            <img src="https://github.com/mdo.png" alt="" width="40" height="40" class="rounded-circle me-2">
+            <!-- <img src="https://github.com/mdo.png" alt="" width="40" height="40" class="rounded-circle me-2"> -->
+            <i class="bi bi-person-circle" ></i>&nbsp;
             <?php
             if (isset($_SESSION['loggedin'])) {
                 echo '<strong class="text" style="color: #989696;">' . $_SESSION['username'] . '</strong>';
             } else {
-                echo '<strong class="text" style="color: #989696;">Jararen CatLoveShop</strong>';
+                echo '<strong class="text" style="color: #989696;"></strong>';
             }
             ?>
             <!-- <strong class="text" style="color: #989696;">Jararen CatLoveShop</strong> -->
-        </a>
+        </a>  
 
         <hr style="color: white;">
         <ul class="nav nav-pills flex-column mb-auto">
@@ -67,13 +72,13 @@ session_start();
                 if (isset($_SESSION['loggedin'])) {
                     echo '  <form action="logout.php" method="post">
                                 <button type="submit" name="logout" class="btn" style="color: #989696;">
-                                    <h4><i class="bi bi-person-fill"></i><span class="text">&nbsp;&nbsp;</span><span class="fs-5 text">Logout</span></h4>
+                                    <h4><i class="bi bi-box-arrow-right"></i><span class="text">&nbsp;&nbsp;</span><span class="fs-5 text">Logout</span></h4>
                                 </button>
                             </form>';
                 } else {
                     echo '  <a href="login.php" class="nav-link " style="color: #989696;">
                                 <h4>
-                                <i class="bi bi-person-fill"></i>
+                                <i class="bi bi-box-arrow-in-right"></i>
                                 <span class="text">&nbsp;&nbsp;</span>
                                     <span class="fs-5 text">
                                         Login

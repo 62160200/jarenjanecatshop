@@ -23,7 +23,7 @@ include 'layout.php';
         font-size: 50px;
         font-family: 'Mitr', sans-serif;
         color: #000000;
-        margin-top: 50px;
+        margin-top: 55px;
         margin-left: 8rem;
         margin-bottom: 50px;
     }
@@ -152,7 +152,7 @@ include 'layout.php';
                             </p>
                         </div>
                         <center>
-                            <button class="btn btn-dark">ยืนยันคำสั่งซื้อ</button>
+                            <a href="pay.php" class="btn btn-dark">ยืนยันคำสั่งซื้อ</a>
                         </center>
                     </div>
                 </div>

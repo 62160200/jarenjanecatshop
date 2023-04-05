@@ -37,7 +37,7 @@
     /* จัดตำแหน่ง icon ให้อยู่ตรงกลางเมื่อ sidebar ย่อ */
 }
 
-.top-bar {
+.top-bar,.form-control {
     position: fixed;
     top: 0;
     left: 0;
