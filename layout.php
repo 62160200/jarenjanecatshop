@@ -29,6 +29,12 @@ session_start();
     color: #989696;
     margin-left: 1rem;
 }
+#search{
+    margin-left: 1rem;
+    margin-right: 1rem;
+    height: 40px;
+    width: 300px;
+}
 
 </style>
 
@@ -106,9 +112,9 @@ session_start();
             </li>
         </ul>
     </div>
-    <div class="top-bar d-flex align-items-center">
+    <div class="top-bar d-flex align-items-right">
         <form class="search-form ms-auto">
-            <input class="form-control" type="search" placeholder="ค้นหา" aria-label="ค้นหา">
+            <input class="form-control" type="search" id="search" placeholder="ค้นหา" aria-label="ค้นหา">
         </form>
             <?php
             if (isset($_SESSION['loggedin'])) {
