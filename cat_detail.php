@@ -1,7 +1,6 @@
 <?php
 include 'layout.php';
 
-
 ?>
 
 <!DOCTYPE html>
@@ -157,7 +156,7 @@ include 'layout.php';
 
     ?>
     <h1 class="title fw-bold"><?= $cats['name'] ?></h1>
-    
+
     <div class="album">
         <div class="container mt-5">
             <div class="row">
@@ -199,29 +198,25 @@ include 'layout.php';
                     </div>
                     <br>
                     <div class="text-center">
-                        <?php
-                        if (isset($_SESSION['loggedin']) && $_SESSION['role'] == 'admin') {
-                            echo '<button id="delete"  class="btn btn-dark center-button me-1"><i class="bi bi-trash"></i> ลบ</button>';
-                            echo '<a href="edit_cat.php?id=' . $cats['CatID'] . '" class="btn btn-dark center-button ms-1"><i class="bi bi-pencil-square"></i> แก้ไข</a>';
-                        }
-                        ?>
-                        <!-- <a href="" class="btn btn-dark center-button"><i class="bi bi-chat-square-dots"></i> ทักแชทสอบถาม</a> -->
+                        <button id="delete" class="btn btn-dark center-button me-1" <?php if ($_SESSION['role'] !== 'admin') {echo 'disabled';} ?>><i class="bi bi-trash"></i> ลบ</button>
+                        <button id="edit" class="btn btn-dark center-button ms-1" <?php if ($_SESSION['role'] !== 'admin') {echo 'disabled';} ?>><i class="bi bi-pencil-square"></i> แก้ไข</button>
                     </div>
                     <div class="text-center mt-2">
                         <button id="cat-cart" class="btn btn-dark center-button" <?php if (isset($cart['CartID'])) {
-                                                                                    echo 'disabled';
-                                                                                } ?>>
-                                                                                <?php if (isset($cart['CartID'])) {
-                                                                                            echo '<i class="bi bi-check"></i>สามารถเลือกได้ครั้งละ 1 ตัวเท่านั้น';
-                                                                                        } else {
-                                                                                            echo '<i class="bi bi-bag"></i> นำใส่ตระกร้า';
-                                                                                        } ?></button>
+                                                                                        echo 'disabled';
+                                                                                    } ?>>
+                            <?php if (isset($cart['CartID'])) {
+                                echo '<i class="bi bi-check"></i>สามารถเลือกได้ครั้งละ 1 ตัวเท่านั้น';
+                            } else {
+                                echo '<i class="bi bi-bag"></i> นำใส่ตระกร้า';
+                            } ?></button>
                     </div>
-                    </div>
-                </div>
 
+                </div>
             </div>
+
         </div>
+    </div>
 </body>
 
 <script>
@@ -239,6 +234,25 @@ include 'layout.php';
         }).then((result) => {
             if (result.isConfirmed) {
                 window.location.href = 'delete_cat.php?id=' + <?= $cats['CatID'] ?>;
+            } else {
+                e.preventDefault();
+            }
+        })
+    });
+
+    document.getElementById('edit').addEventListener('click', function(e) {
+        Swal.fire({
+            title: 'คุณต้องการแก้ไขข้อมูลนี้ใช่หรือไม่?',
+            text: "คุณจะไม่สามารถกู้คืนข้อมูลนี้ได้หากแก้ไขแล้ว!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'ใช่, แก้ไขข้อมูลนี้!',
+            cancelButtonText: 'ยกเลิก'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = 'edit_cat.php?id=' + <?= $cats['CatID'] ?>;
             } else {
                 e.preventDefault();
             }
@@ -285,7 +299,6 @@ include 'layout.php';
             }
         })
     });
-
 </script>
 
 

@@ -66,7 +66,7 @@ if (!isset($_SESSION['user_id']) && $_SESSION['role'] !== 'admin') {
                                 <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
                             </div>
                             <div class="mb-3">
-                                <label for="image" class="form-label">รูปภาพ:</label>
+                                <label for="image" class="form-label">รูปภาพ: (ใส่แค่ 5 รูปเท่านั้นและไม่สามารถเพิ่มหรือแก้ไขรูปภาพได้)</label>
                                 <input type="file" class="form-control" id="image" name="image[]" accept="image/*" multiple required>
                             </div>
                             <div class="mb-3">

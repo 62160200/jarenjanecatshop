@@ -137,7 +137,7 @@ session_start();
         </ul>
     </div>
     <div class="top-bar d-flex align-items-right">
-        <form class="search-form ms-auto">
+        <form class="search-form ms-auto" action="cat_shop.php" method="post" id="search-form">
             <input class="form-control" type="search" id="search" placeholder="ค้นหา" aria-label="ค้นหา">
         </form>
         <?php
@@ -184,6 +184,20 @@ session_start();
         });
         sidebar.classList.add("collapsed");
         topBar.style.left = "100px";
+
+
+        // search form 
+        const searchForm = document.querySelector("#search-form");
+        const searchInput = document.querySelector("#search");
+        searchForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const searchValue = searchInput.value;
+            if (searchValue.trim() != "") {
+                window.location.href = `cat_shop.php?search=${searchValue}`;
+            }
+        });
+        
+
     </script>
 </body>
 

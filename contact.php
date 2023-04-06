@@ -17,8 +17,9 @@ include "layout.php";
 <div class="banner">
         <h1 class="text-banner">ติดต่อเรา</h1>
         <h3 class="text-white">บริการซื้อขายแมว</h3>
-        <h3 class="text-white">เบอร์โทรศัพท์ 081-234-5678</h3>
-        <h3 class="text-white">อีเมล์ 6216176@go.buu.ac.th</h3>
+        <h3 class="text-white"><i class="bi bi-phone"></i> 099-999-9999</h3>
+        <h3 class="text-white"><i class="bi bi-facebook"></i> JA NE</h3>
+        <h3 class="text-white"><i class="bi bi-instagram"></i> jararennn </h3>
         <a href="cat_shop.php" class="btn btn-primary center-button">SHOP</a>
     </div>
 </body>

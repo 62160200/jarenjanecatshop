@@ -55,8 +55,12 @@ include 'layout.php';
         <div class="container">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                 <?php
-                
+
+                // get all cats from database or search cats by name or breed
                 $sql = "SELECT * FROM cats";
+                if (isset($_GET['search'])) {
+                    $sql = "SELECT * FROM cats WHERE name LIKE '%{$_GET['search']}%' OR breed LIKE '%{$_GET['search']}%'";
+                }
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute();
                 $cats = $stmt->fetchAll(PDO::FETCH_ASSOC);
