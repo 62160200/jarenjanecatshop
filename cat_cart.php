@@ -1,6 +1,5 @@
 <?php
 include 'layout.php';
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,155 +11,210 @@ include 'layout.php';
     <title>Document</title>
 </head>
 <style>
-    @media (min-width: 1025px) {
-        .h-custom {
-            height: 100vh !important;
-        }
-    }
-
-    .title {
-        text-align: left;
-        font-size: 50px;
-        font-family: 'Mitr', sans-serif;
-        color: #000000;
-        margin-top: 55px;
-        margin-left: 8rem;
-        margin-bottom: 50px;
-    }
-
     .container {
-        margin-left: 8rem;
+        margin-top: 150px;
     }
 
-    .title1 {
-        font-family: 'Mitr', sans-serif;
-        color: #000000;
-        margin-top: 1px;
-        margin-left: 3rem;
-        margin-right: 3rem;
-        /* margin-bottom: 100px; */
-        line-height: 20px;
+    .card-text {
+        font-size: 13px;
+        line-height: 1.5;
     }
 
-    .d-flex1 {
-        font-size: 20px;
-        margin-left: 10.5rem;
-        margin-bottom: 100px;
-        line-height: -10px;
-    }
-
-    center {
-        margin-bottom: 30px;
-    }
-
-    .sum {
-        margin-bottom: 0px;
-    }
-
-    body {
-        font-family: 'Mitr', sans-serif;
-    }
-
-    .card {
-        /* border: none; */
-        border-radius: 10px;
-        margin-left: 2rem;
-        margin-right: 2rem;
-        margin-bottom: 1rem;
-        /* box-shadow: 0 0 0 0 rgba(0,0,0,0); */
-    }
-
-    .col-md-3 {
-        margin-left: 6rem;
-
-    }
-
-    .col-md-5 {
-        margin-left: 2rem;
-    }
-
-    .g-0 {
-        margin-left: 10px;
-        margin-right: 10px;
-    }
-
-    .img {
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-        margin-left: 0.5rem;
-        margin-right: 2rem;
+    .image-md {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
     }
 </style>
 
 <body>
-    <h1 class="title"><b>ตะกร้าแมว</b></h1>
     <div class="container">
-        <div class="row">
-            <div class="col-md-8">
-                <!-- <h2>รายการสินค้าที่เลือก</h2> -->
-                <!-- Add your product cards here -->
-                <div class="card mb-3">
-                    <div class="row g-0">
-                        <div class="col-md-2">
-                            <img src="cat_imge\cat6.png" class="img" alt="Product Image" class="img-fluid" style="max-width: 100%; height: 100%;">
-                        </div>
-                        <div class="col-md-5">
-                            <div class="card-body">
-                                <h4 class="card-title"><b>น้องเหนียง</b></h4>
-                                <p class="card-text" style="font-size: 13px;line-height: 1px;">พันธุ์บริติช ชอร์ตแฮร์</p>
-                                <h6 class="card-title" style="font-size: 18px;"><b>รายละเอียด</b></h6>
-                                <p class="card-text" style="font-size: 13px;line-height: 1px;">หนุ่มมีไข่อยู่ครบ2 ใบ</p>
-                                <p class="card-text" style="font-size: 13px;line-height: 1px;">British ShortHair NY11</p>
-                                <p class="card-text" style="font-size: 13px;line-height: 1px;">DOB 12/06/2019 น้ำหนัก5.5kgs.</p>
+        <h1 class="fw-bold">ตะกร้าแมว</h1>
+        <div class="row mt-5">
+            <div class="col-8">
+                <?php
+                $user_id = $_SESSION['user_id'];
+                $sql = "SELECT * FROM carts INNER JOIN cats ON carts.CatID = cats.CatID WHERE carts.UserID = $user_id AND carts.CartStatus = 0";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute();
+                $carts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+
+                foreach ($carts as $row) {
+                    //get image first 
+                    $image = $row['image'];
+                    $image = explode(',', $image);
+                    $image = $image[0];
+
+                ?>
+                    <div class="card mb-3">
+                        <div class="row g-0">
+                            <div class="col-3 me-4">
+                                <img src="images/<?= $image ?>" class="img-fluid rounded-start image-md" alt="...">
+                            </div>
+                            <div class="col-4">
+                                <div class="card-body">
+                                    <h4 class="card-title fw-bold"><?= $row['name'] ?></h4>
+                                    <p class="card-text"><?= $row['breed'] ?></p>
+                                    <h6 class="card-title" style="font-size: 18px;"><b>รายละเอียด</b></h6>
+                                    <p class="card-text"><?= $row['description'] ?></p>
+
+                                </div>
+                            </div>
+                            <div class="col-3 d-flex align-items-end">
+                                <div class="ms-auto p-2">
+                                    <h4 class="fw-bold text-end"><?= $row['price'] ?> ฿</h4>
+                                </div>
+                            </div>
+                            <div class="col-1 d-flex align-items-end position-absolute top-0 end-0">
+                                <div class="ms-auto p-2">
+                                    <button id="cart-delete" data-id="<?= $row['CartID'] ?>" class="btn"><i class="bi bi-x-lg"></i></button>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-3 d-flex align-items-end">
-                            <!-- <div class="card-footer text-end"> -->
-                            <h3><b>40,000 ฿</b></h3>
-                            <!-- </div> -->
+                    </div>
+                <?php
+                }
+
+                // count cart
+                $sql = "SELECT COUNT(*) AS count FROM carts WHERE UserID = $user_id AND CartStatus = 0";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute();
+                $count = $stmt->fetch(PDO::FETCH_ASSOC);
+                $count = $count['count'];
+
+                //get total price and if no item in cart set total = 0
+                $sql = "SELECT SUM(price) AS total FROM carts INNER JOIN cats ON carts.CatID = cats.CatID WHERE carts.UserID = $user_id AND carts.CartStatus = 0";
+                if ($count == 0) {
+                    $total = 0;
+                } else {
+                    $stmt = $pdo->prepare($sql);
+                    $stmt->execute();
+                    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                    $total = $result['total'];
+                }
+
+                //get shipping price if total > 10000 and if no item in cart set shipping = 0
+                if ($total > 20000) {
+                    $shipping = 0;
+                } else if ($count == 0) {
+                    $shipping = 0;
+                } else {
+                    $shipping = 200;
+                }
+
+                //get 7% val
+                $val = $total * 0.07;
+
+                //get all price
+                $all = $total + $shipping + $val;
+
+                ?>
+
+            </div>
+            <div class="col-1">
+                <div class="border-start h-100 ps-3"></div>
+            </div>
+            <div class="col-3">
+                <h1 class="text-center fw-bold">คำสั่งซื้อ</h1>
+                <div class="row mt-5">
+                    <div class="col-7">
+                        <div class="mb-3">
+                            จำนวนสินค้า: <?= $count ?> รายการ
+                        </div>
+                    </div>
+                    <div class="col-5">
+                        <div class="mb-3">
+                            <?= $total ?> ฿
+                        </div>
+                    </div>
+                    <div class="col-7">
+                        <div class="mb-3">
+                            ค่าจัดส่ง:
+                        </div>
+                    </div>
+                    <div class="col-5">
+                        <div class="mb-3">
+                            <?= $shipping ?> ฿
+                        </div>
+                    </div>
+                    <div class="col-7">
+                        <div class="mb-3">
+                            Val 7%:
+                        </div>
+                    </div>
+                    <div class="col-5">
+                        <div class="mb-3">
+                            <?= $val ?> ฿
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="mb-3">
+                            ยอดรวม:
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="mb-3">
+                            <h1 class="fw-bold text-end"><?= $all ?> ฿</h1>
                         </div>
                     </div>
                 </div>
+                <div class="text-center">
+                    <form action="add_order.php" method="post" id="form">
+                        <input type="hidden" name="cart_id" value="<?= $row['CartID'] ?>">
+                        <input type="hidden" name="count" value="<?= $count ?>">
+                        <input type="hidden" name="total" value="<?= $total ?>">
+                        <input type="hidden" name="shipping" value="<?= $shipping ?>">
+                        <input type="hidden" name="val" value="<?= $val ?>">
+                        <input type="hidden" name="all" value="<?= $all ?>">
+                        <button type="submit" id="payment" class="btn btn-dark btn-lg" <?php if ($count == 0) {echo 'disabled';} ?>>ชำระเงิน</button>
 
-                <!-- Repeat the card for other products -->
-            </div>
-            <div class="col-md-4">
-                <div class="border-start ps-3">
-                    <div class="title1">
-                        <center>
-                            <h2><b>คำสั่งซื้อ</b></h2>
-                        </center>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <p>จำนวน 1 รายการ</p>
-                            <p>40000</p>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <p>ค่าจัดส่ง</p>
-                            <p>200</p>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <p>Vat 7%</p>
-                            <p>2800</p>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <p class="sum">รวม</p>
-                        </div>
-                        <div class="d-flex1 justify-content-between align-items-center">
-                            <p>
-                            <h3><b>43,000 ฿</b></h3>
-                            </p>
-                        </div>
-                        <center>
-                            <a href="pay.php" class="btn btn-dark">ยืนยันคำสั่งซื้อ</a>
-                        </center>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
 </body>
+
+<script>
+    document.querySelectorAll('#cart-delete').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            let id = btn.dataset.id
+            Swal.fire({
+                title: 'คุณต้องการลบสินค้าใช่หรือไม่?',
+                showDenyButton: true,
+                confirmButtonText: `ลบ`,
+                denyButtonText: `ยกเลิก`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'delete_cart.php?id=' + id
+                } else {
+                    e.preventDefault()
+                }
+            })
+
+        })
+    })
+
+    document.querySelector('#payment').addEventListener('click', (e) => {
+        e.preventDefault()
+        let total = <?= $total ?>;
+        let shipping = <?= $shipping ?>;
+        let val = <?= $val ?>;
+        let all = <?= $all ?>;
+        Swal.fire({
+            title: 'คุณต้องการชำระเงินใช่หรือไม่?',
+            showDenyButton: true,
+            confirmButtonText: `ชำระเงิน`,
+            denyButtonText: `ยกเลิก`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.querySelector('#form').submit()
+            } else {
+                e.preventDefault()
+            }
+        })
+    })
+</script>
 
 </html>

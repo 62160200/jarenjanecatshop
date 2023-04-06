@@ -1,6 +1,7 @@
 <?php
 include 'layout.php';
 
+
 ?>
 
 <!DOCTYPE html>
@@ -40,57 +41,51 @@ include 'layout.php';
         margin-left: 10px;
         margin-bottom: 1px;
     }
+    .card-img-top{
+        width: 100%;
+        height: 20vw;
+        object-fit: cover;
+    }
 </style>
 
 <body>
     <h1 class="title"><b>ตลาดแมว</b></h1>
 
-    <div class="album py-10 bg-light">
+    <div class="album py-10">
         <div class="container">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                <?php
+                
+                $sql = "SELECT * FROM cats";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute();
+                $cats = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                <div class="col">
-                    <img src="cat_imge\cat6.png" alt="cat" width="80%" height="70%">
-                    <div class="card-body">
-                        <h3><b>น้องเปอร์เซีย</b></h3>
-                        <p class="card-text">พันธ์ุเปอร์เซีย</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <p class="card-text">อายุ : 2 ปี</p>
-                            <div class="btn-group">
-                                <a href="cat_detail.php" class="btn btn-dark center-button">11,000 B</a>
+                // get age form dob (date of birth) in age value and get first image from images
+                foreach ($cats as $cat) {
+                    // calculate cat age range from dob (date of birth)
+                    $cat['ages'] = date_diff(date_create($cat['dob']), date_create('now'))->y;
+                    // get first image from images  
+                    $cat['image'] = explode(',', $cat['image'])[0];
+                    // format price to Thai Baht currency format
+                    $cat['price'] = number_format($cat['price'], 0, '.', ',');
+                ?>
+                    <div class="col">
+                        <img src="images\<?= $cat['image'] ?>" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h3><b><?= $cat['name'] ?></b></h3>
+                            <p class="card-text"><?= $cat['breed'] ?></p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <p class="card-text">อายุ : <?= $cat['ages'] ?> ปี</p>
+                                <div class="btn-group">
+                                    <a href="cat_detail.php?id=<?= $cat['CatID'] ?>" class="btn btn-dark center-button"><?= $cat['price'] ?> ฿</a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col">
-                    <img src="cat_imge\cat6.png" alt="cat" width="80%" height="70%">
-                    <div class="card-body">
-                        <h3><b>น้องเปอร์เซีย</b></h3>
-                        <p class="card-text">พันธ์ุเปอร์เซีย</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <p class="card-text">อายุ : 2 ปี</p>
-                            <div class="btn-group">
-                                <a href="cat_detail.php" class="btn btn-dark center-button">11,000 B</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <img src="cat_imge\cat6.png" alt="cat" width="80%" height="70%">
-                    <div class="card-body">
-                        <h3><b>น้องเปอร์เซีย</b></h3>
-                        <p class="card-text">พันธ์ุเปอร์เซีย</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <p class="card-text">อายุ : 2 ปี</p>
-                            <div class="btn-group">
-                                <a href="cat_detail.php" class="btn btn-dark center-button">11,000 B</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-
+                <?php
+                }
+                ?>
             </div>
         </div>
     </div>

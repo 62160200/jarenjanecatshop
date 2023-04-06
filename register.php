@@ -1,6 +1,7 @@
 <?php
 // Include config file
 require_once "config/db.php";
+session_start();
 
 ?>
 

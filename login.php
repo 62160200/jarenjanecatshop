@@ -1,6 +1,7 @@
 <?php
 // Include config file
 require_once "config/db.php";
+session_start();
 if (isset($_SESSION['loggedin'])) {
     header("Location: index.php");
 }
@@ -25,7 +26,6 @@ if (isset($_SESSION['loggedin'])) {
     <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/login.css">
     <title>Login Page</title>
-
 </head>
 
 <body>
@@ -80,7 +80,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
                     session_start();
                     $_SESSION['loggedin'] = true;
                     $_SESSION['username'] = $param_username;
-                    $_SESSION['id'] = $row['id'];
+                    $_SESSION['user_id'] = $row['UserID'];
                     $_SESSION['role'] = $row['role'];
                     echo "<script>Swal.fire({
                         icon: 'success',

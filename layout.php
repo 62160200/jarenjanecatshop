@@ -18,41 +18,60 @@ session_start();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous">
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/layout.css">
 </head>
 <style>
-.bi-person-circle{
-    font-size: 1.8rem;
-    color: #989696;
-    margin-left: 1rem;
-}
-#search{
-    margin-left: 1rem;
-    margin-right: 1rem;
-    height: 40px;
-    width: 300px;
-}
+    .bi-person-circle {
+        font-size: 1.8rem;
+        color: #989696;
+        margin-left: 1rem;
+    }
 
+    #search {
+        margin-left: 1rem;
+        margin-right: 1rem;
+        height: 40px;
+        width: 300px;
+    }
+
+    .product-number-con {
+        position: relative;
+    }
+
+    .product-number {
+        position: absolute;
+        color: white;
+        background-color: red;
+        font-size: 15px;
+        width: 20px;
+        height: 20px;
+        text-align: center;
+        border-radius: 100%;
+        top: -6px;
+        right: -6px;
+    }
 </style>
 
 <body style="font-family: 'Mitr', sans-serif; ">
     <div class="fixed-sidebar d-flex flex-column flex-shrink-0 p-3" id="sidebar">
-        
+
         <a href="#" class="d-flex align-items-center text-white text-decoration-none " aria-expanded="false">
             <!-- <img src="https://github.com/mdo.png" alt="" width="40" height="40" class="rounded-circle me-2"> -->
-            <i class="bi bi-person-circle" ></i>&nbsp;
+            <i class="bi bi-person-circle"></i>&nbsp;
             <?php
             if (isset($_SESSION['loggedin'])) {
                 echo '<strong class="text" style="color: #989696;">' . $_SESSION['username'] . '</strong>';
             } else {
-                echo '<strong class="text" style="color: #989696;"></strong>';
+                echo '<strong class="text" style="color: #989696;">Jararen CatLoveShop</strong>';
             }
             ?>
             <!-- <strong class="text" style="color: #989696;">Jararen CatLoveShop</strong> -->
-        </a>  
+        </a>
 
         <hr style="color: white;">
         <ul class="nav nav-pills flex-column mb-auto">
@@ -61,11 +80,16 @@ session_start();
                     <h4><i class="bi bi-house-door-fill" style="color: #989696;"></i><span class="text">&nbsp;&nbsp;</span><span class="fs-5 text" style="color: #989696;">หน้าแรก</span></h4>
                 </a>
             </li>
-            <li>
-                <a href="" class="nav-link " style="color: #989696;">
-                    <h4><i class="bi bi-heart-fill"></i><span class="text">&nbsp;&nbsp;</span><span class="fs-5 text">รายการโปรด</span></h4>
+            <?php
+            if (isset($_SESSION['loggedin']) && $_SESSION['role'] == 'admin') {
+                echo '<li>
+                <a href="insert_cat.php" class="nav-link " style="color: #989696;">
+                    <h4><i class="bi bi-heart-fill"></i><span class="text">&nbsp;&nbsp;</span><span class="fs-5 text">เพิ่มแมว</span></h4>
                 </a>
-            </li>
+            </li>';
+            }
+            ?>
+
             <li>
                 <a href="cat_shop.php" class="nav-link " style="color: #989696;">
                     <h4><i class="bi bi-shop-window"></i><span class="text">&nbsp;&nbsp;</span><span class="fs-5 text">ตลาดแมว</span></h4>
@@ -101,12 +125,12 @@ session_start();
         </h5>
         <ul class="nav nav-pills flex-column ">
             <li>
-                <a href="" class="nav-link " style="color: #989696;">
+                <a href="aboutme.php" class="nav-link " style="color: #989696;">
                     <h4><i class="bi bi-info-circle-fill"></i><span class="text">&nbsp;&nbsp;</span><span class="fs-5 text">เกี่ยวกับเรา</span></h4>
                 </a>
             </li>
             <li>
-                <a href="" class="nav-link " style="color: #989696;">
+                <a href="contact.php" class="nav-link " style="color: #989696;">
                     <h4><i class="bi bi-telephone-fill"></i><span class="text">&nbsp;&nbsp;</span><span class="fs-5 text">ติดต่อฉัน</span></h4>
                 </a>
             </li>
@@ -116,15 +140,26 @@ session_start();
         <form class="search-form ms-auto">
             <input class="form-control" type="search" id="search" placeholder="ค้นหา" aria-label="ค้นหา">
         </form>
-            <?php
-            if (isset($_SESSION['loggedin'])) {
-                echo '  <div class="icon-container">
-                            <a href="cat_cart.php" class="btn">
-                                <b><i class="bi bi-bag"></i></b>
-                            </a>
-                        </div>';
-            }
-            ?>
+        <?php
+        if (isset($_SESSION['loggedin'])) {
+            // count cart
+            $sql = "SELECT COUNT(*) AS count FROM carts WHERE UserID = " . $_SESSION['user_id'] . " AND CartStatus = 0";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
+            $count = $stmt->fetch(PDO::FETCH_ASSOC);
+            $count = $count['count'];
+        ?>
+            <div class="icon-container product-number-con">
+                <a href="cat_cart.php" class="btn">
+                    <b><i class="bi bi-bag"></i></b>
+                </a>
+                <?php if ($count > 0) { ?>
+                    <span class="product-number"><?= $count; ?></span>
+                <?php } ?>
+            </div>
+        <?php
+        }
+        ?>
 
     </div>
 
