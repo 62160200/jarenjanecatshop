@@ -83,7 +83,15 @@ include 'layout.php';
     $stmt->execute();
     $cats = $stmt->fetch(PDO::FETCH_ASSOC);
     // get age form dob (date of birth) in age value
-    $cats['ages'] = date_diff(date_create($cats['dob']), date_create('now'))->y;
+    $dob = date('Y-m-d', strtotime($cats['dob']));
+    $now = date('Y-m-d');
+    $diff = date_diff(date_create($dob), date_create($now));
+    $age = $diff->format('%y');
+    if ($age > 0) {
+        $cats['ages'] = $age . ' ปี ' . $diff->format('%m') . ' เดือน';
+    } else {
+        $cats['ages'] = $diff->format('%m') . ' เดือน';
+    }
     // get image from images
 
     $cats['image5'] = explode(',', $cats['image'])[0];
@@ -174,7 +182,7 @@ include 'layout.php';
                     <h5><b>ข้อมูล</b></h5>
                     <div class="d-flex justify-content-between align-items-center">
                         <p>อายุ</p>
-                        <p><?= $cats['ages'] ?> ปี</p>
+                        <p><?= $cats['ages'] ?></p>
                     </div>
                     <div class="d-flex justify-content-between align-items-center">
                         <p>เพศ</p>
@@ -197,14 +205,15 @@ include 'layout.php';
                         <h3 class="d-inline font-weight-bold"><?= $cats['price'] ?> ฿</h3>
                     </div>
                     <br>
-                    <div class="text-center">
-                        <button id="delete" class="btn btn-dark center-button me-1" <?php if ($_SESSION['role'] !== 'admin') {echo 'disabled';} ?>><i class="bi bi-trash"></i> ลบ</button>
-                        <button id="edit" class="btn btn-dark center-button ms-1" <?php if ($_SESSION['role'] !== 'admin') {echo 'disabled';} ?>><i class="bi bi-pencil-square"></i> แก้ไข</button>
-                    </div>
                     <div class="text-center mt-2">
-                        <button id="cat-cart" class="btn btn-dark center-button" <?php if (isset($cart['CartID'])) {
+                        <button id="cat-cart" class="btn btn-dark center-button" <?php if (isset($_SESSION['user_id'])) {
+                                                                                        if (isset($cart['CartID'])) {
+                                                                                            echo 'disabled';
+                                                                                        }
+                                                                                    } else {
                                                                                         echo 'disabled';
-                                                                                    } ?>>
+                                                                                    }
+                                                                                    ?>>
                             <?php if (isset($cart['CartID'])) {
                                 echo '<i class="bi bi-check"></i>สามารถเลือกได้ครั้งละ 1 ตัวเท่านั้น';
                             } else {
@@ -220,44 +229,6 @@ include 'layout.php';
 </body>
 
 <script>
-    // check delete button is clicked or not before redirect to delete_cat.php
-    document.getElementById('delete').addEventListener('click', function(e) {
-        Swal.fire({
-            title: 'คุณต้องการลบข้อมูลนี้ใช่หรือไม่?',
-            text: "คุณจะไม่สามารถกู้คืนข้อมูลนี้ได้หากลบแล้ว!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'ใช่, ลบข้อมูลนี้!',
-            cancelButtonText: 'ยกเลิก'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = 'delete_cat.php?id=' + <?= $cats['CatID'] ?>;
-            } else {
-                e.preventDefault();
-            }
-        })
-    });
-
-    document.getElementById('edit').addEventListener('click', function(e) {
-        Swal.fire({
-            title: 'คุณต้องการแก้ไขข้อมูลนี้ใช่หรือไม่?',
-            text: "คุณจะไม่สามารถกู้คืนข้อมูลนี้ได้หากแก้ไขแล้ว!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'ใช่, แก้ไขข้อมูลนี้!',
-            cancelButtonText: 'ยกเลิก'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = 'edit_cat.php?id=' + <?= $cats['CatID'] ?>;
-            } else {
-                e.preventDefault();
-            }
-        })
-    });
 
     document.getElementById('cat-cart').addEventListener('click', function() {
         Swal.fire({

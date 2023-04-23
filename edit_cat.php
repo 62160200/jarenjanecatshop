@@ -43,6 +43,7 @@ $cat = $stmt->fetch(PDO::FETCH_ASSOC);
         <div class="row">
             <div class="col-md-8 offset-md-2">
                 <h1 class="mt-5 mb-4">แก้ไขข้อมูลแมว</h1>
+                <button id="back" class="btn btn-danger mb-2">ยกเลิก</button>
                 <div class="card">
                     <div class="card-body">
                         <form method="post" enctype="multipart/form-data">
@@ -80,8 +81,16 @@ $cat = $stmt->fetch(PDO::FETCH_ASSOC);
                                     <option value="Not Injected Yet" <?php if ($cat['vaccine'] === 'Not Injected Yet') echo 'selected' ?>>ยังไม่ฉีด</option>
                                 </select>
                             </div>
+                            <div class="mb-3">
+                                <label for="vaccine" class="form-label">สถานะ:</label>
+                                <select class="form-select" id="status" name="status">
+                                    <option value="available" <?php if ($cat['status'] === 'available') echo 'selected' ?>>พร้อมขาย</option>
+                                    <option value="soldout" <?php if ($cat['status'] === 'soldout') echo 'selected' ?>>ขายแล้ว</option>
+                                </select>
+                            </div>
                             <input type="submit" value="แก้ไขข้อมูล" class="btn btn-primary">
                         </form>
+
                     </div>
                 </div>
             </div>
@@ -91,14 +100,34 @@ $cat = $stmt->fetch(PDO::FETCH_ASSOC);
 </body>
 
 
+<script>
+    document.getElementById('back').addEventListener('click', function() {
+        Swal.fire({
+            title: 'ยกเลิกการแก้ไขข้อมูล',
+            text: "คุณต้องการยกเลิกการแก้ไขข้อมูลใช่หรือไม่?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'ใช่',
+            cancelButtonText: 'ไม่ใช่'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = 'cat_list.php';
+            }
+        })
+    });
+</script>
+
+
 <?php
 
-if (isset($_POST['name']) && isset($_POST['gender']) && isset($_POST['dob']) && isset($_POST['breed']) && isset($_POST['price']) && isset($_POST['description']) && isset($_POST['vaccine'])) {
+if (isset($_POST['name']) && isset($_POST['gender']) && isset($_POST['dob']) && isset($_POST['breed']) && isset($_POST['price']) && isset($_POST['description']) && isset($_POST['vaccine']) && isset($_POST['status'])) {
 
 
     // Prepare an update statement
 
-    $sql = 'UPDATE cats SET name = :name ,gender = :gender, dob = :dob, breed = :breed, price = :price, description = :description, vaccine = :vaccine WHERE CatID = :id';
+    $sql = 'UPDATE cats SET name = :name ,gender = :gender, dob = :dob, breed = :breed, price = :price, description = :description, vaccine = :vaccine, status = :status WHERE CatID = :id';
 
     if ($stmt = $pdo->prepare($sql)) {
 
@@ -111,6 +140,7 @@ if (isset($_POST['name']) && isset($_POST['gender']) && isset($_POST['dob']) && 
         $stmt->bindParam(":price", $param_price, PDO::PARAM_STR);
         $stmt->bindParam(":description", $param_description, PDO::PARAM_STR);
         $stmt->bindParam(":vaccine", $param_vaccine, PDO::PARAM_STR);
+        $stmt->bindParam(":status", $param_status, PDO::PARAM_STR);
 
         // Set parameters
         $param_id = $cat_id;
@@ -121,6 +151,7 @@ if (isset($_POST['name']) && isset($_POST['gender']) && isset($_POST['dob']) && 
         $param_price = trim($_POST["price"]);
         $param_description = trim($_POST["description"]);
         $param_vaccine = trim($_POST["vaccine"]);
+        $param_status = trim($_POST["status"]);
 
         // Attempt to execute the prepared statement
         if ($stmt->execute()) {
@@ -132,7 +163,7 @@ if (isset($_POST['name']) && isset($_POST['gender']) && isset($_POST['dob']) && 
                 showConfirmButton: false,
                 timer: 1500
             }).then(function() {
-                window.location = 'cat_detail.php?id=$cat_id';
+                window.location = 'cat_list.php';
             });
             </script>";
         } else {
@@ -143,7 +174,7 @@ if (isset($_POST['name']) && isset($_POST['gender']) && isset($_POST['dob']) && 
                 showConfirmButton: false,
                 timer: 1500
             }).then(function() {
-                window.location = 'cat_detail.php?id=$cat_id';
+                window.location = 'cat_list.php';
             });
             </script>";
         }

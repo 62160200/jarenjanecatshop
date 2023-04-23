@@ -32,7 +32,7 @@ require_once "config/db.php";
         //set new name for iamge
         $new_name = $order_id . '_' . date("YmdHis") . '.' . $image_ext;
         //set path for iamge
-        $path = "slip/" . $new_name;
+        $path = "slip_image/" . $new_name;
         $image = $new_name;
         $param_slip_iamge = $image;
         //upload iamge
@@ -40,7 +40,20 @@ require_once "config/db.php";
 
         // Attempt to execute the prepared statement
         if ($stmt->execute()) {
+
+
             $sql = "UPDATE orders SET Status = 'succeeded' WHERE OrderID = '$order_id'";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
+
+            $sql = "SELECT CatID FROM carts 
+            JOIN orders ON carts.CartID = orders.CartID
+            WHERE orders.OrderID = '$order_id'";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $sql = "UPDATE cats SET Status = 'soldout' WHERE CatID = '" . $row['CatID'] . "'";
             $stmt = $pdo->prepare($sql);
             $stmt->execute();
 
@@ -61,6 +74,7 @@ require_once "config/db.php";
                 window.location.href = 'success_payment.php?payment_id=$payment_id';
             });
             </script>";
+
         } else {
             echo "<script>
             Swal.fire({

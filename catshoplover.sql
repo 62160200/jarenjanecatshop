@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 06, 2023 at 02:54 AM
+-- Generation Time: Apr 23, 2023 at 02:42 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.2.4
 
@@ -42,14 +42,15 @@ CREATE TABLE `carts` (
 
 CREATE TABLE `cats` (
   `CatID` int NOT NULL,
-  `name` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `gender` enum('Male','Female') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `dob` date NOT NULL,
-  `breed` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `breed` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `price` float DEFAULT NULL,
-  `description` varchar(500) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `vaccine` enum('Injected','Not Injected Yet') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
+  `description` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `vaccine` enum('Injected','Not Injected Yet') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `status` enum('available','soldout') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -68,7 +69,7 @@ CREATE TABLE `orders` (
   `Val` float NOT NULL,
   `TotalAmount` float NOT NULL,
   `TotalAll` float NOT NULL,
-  `Status` enum('processing','succeeded') COLLATE utf8mb4_general_ci NOT NULL
+  `Status` enum('processing','succeeded','failed') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -80,12 +81,12 @@ CREATE TABLE `orders` (
 CREATE TABLE `payments` (
   `PaymentID` int NOT NULL,
   `OrderID` int NOT NULL,
-  `firstname` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `lastname` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `bank` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
+  `firstname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `lastname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `bank` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `transfer_amount` int NOT NULL,
   `payment_date` date NOT NULL,
-  `slip_image` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+  `slip_image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -96,11 +97,11 @@ CREATE TABLE `payments` (
 
 CREATE TABLE `users` (
   `UserID` int NOT NULL,
-  `username` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `phone` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `role` varchar(10) COLLATE utf8mb4_general_ci NOT NULL
+  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `role` enum('admin','user') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --

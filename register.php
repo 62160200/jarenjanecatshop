@@ -3,6 +3,11 @@
 require_once "config/db.php";
 session_start();
 
+$page = $_SERVER['PHP_SELF'];
+$title = basename($page, '.php');
+
+$title = ucwords(str_replace('_', ' ', $title));
+$title = $title == 'Register' ? 'สมัครสมาชิก' : $title;
 ?>
 
 
@@ -23,7 +28,8 @@ session_start();
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/register.css">
-    <title>Login Page</title>
+    <title>JARAREN CAT SHOP | <?= $title ?></title>
+    <link rel="icon" type="image/x-icon" href="images/icon/cat-icon.png" />
 </head>
 
 <body>

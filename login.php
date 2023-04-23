@@ -6,6 +6,13 @@ if (isset($_SESSION['loggedin'])) {
     header("Location: index.php");
 }
 
+$page = $_SERVER['PHP_SELF'];
+$title = basename($page, '.php');
+
+$title = ucwords(str_replace('_', ' ', $title));
+$title = $title == 'Login' ? 'เข้าสู่ระบบ' : $title;
+$title = $title == 'Register' ? 'สมัครสมาชิก' : $title;
+
 ?>
 
 
@@ -25,7 +32,8 @@ if (isset($_SESSION['loggedin'])) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/login.css">
-    <title>Login Page</title>
+    <title>JARAREN CAT SHOP | <?= $title ?></title>
+    <link rel="icon" type="image/x-icon" href="images/icon/cat-icon.png" />
 </head>
 
 <body>

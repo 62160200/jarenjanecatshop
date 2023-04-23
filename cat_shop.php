@@ -4,15 +4,6 @@ include 'layout.php';
 
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
 <style>
     .btn-group,
     .btn-dark {
@@ -41,7 +32,8 @@ include 'layout.php';
         margin-left: 10px;
         margin-bottom: 1px;
     }
-    .card-img-top{
+
+    .card-img-top {
         width: 100%;
         height: 20vw;
         object-fit: cover;
@@ -57,7 +49,7 @@ include 'layout.php';
                 <?php
 
                 // get all cats from database or search cats by name or breed
-                $sql = "SELECT * FROM cats";
+                $sql = "SELECT * FROM cats WHERE status = 'available'";
                 if (isset($_GET['search'])) {
                     $sql = "SELECT * FROM cats WHERE name LIKE '%{$_GET['search']}%' OR breed LIKE '%{$_GET['search']}%'";
                 }
@@ -65,10 +57,16 @@ include 'layout.php';
                 $stmt->execute();
                 $cats = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                // get age form dob (date of birth) in age value and get first image from images
                 foreach ($cats as $cat) {
-                    // calculate cat age range from dob (date of birth)
-                    $cat['ages'] = date_diff(date_create($cat['dob']), date_create('now'))->y;
+                    $dob = date('Y-m-d', strtotime($cat['dob']));
+                    $now = date('Y-m-d');
+                    $diff = date_diff(date_create($dob), date_create($now));
+                    $age = $diff->format('%y');
+                    if ($age > 0) {
+                        $cat['ages'] = $age . ' ปี ' . $diff->format('%m') . ' เดือน';
+                    } else {
+                        $cat['ages'] = $diff->format('%m') . ' เดือน';
+                    }
                     // get first image from images  
                     $cat['image'] = explode(',', $cat['image'])[0];
                     // format price to Thai Baht currency format
@@ -80,7 +78,7 @@ include 'layout.php';
                             <h3><b><?= $cat['name'] ?></b></h3>
                             <p class="card-text"><?= $cat['breed'] ?></p>
                             <div class="d-flex justify-content-between align-items-center">
-                                <p class="card-text">อายุ : <?= $cat['ages'] ?> ปี</p>
+                                <p class="card-text">อายุ : <?= $cat['ages'] ?></p>
                                 <div class="btn-group">
                                     <a href="cat_detail.php?id=<?= $cat['CatID'] ?>" class="btn btn-dark center-button"><?= $cat['price'] ?> ฿</a>
                                 </div>
@@ -95,5 +93,3 @@ include 'layout.php';
     </div>
 
 </body>
-
-</html>

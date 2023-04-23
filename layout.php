@@ -3,6 +3,24 @@
 require_once "config/db.php";
 session_start();
 
+$page = $_SERVER['PHP_SELF'];
+$title = basename($page, '.php');
+
+$title = ucwords(str_replace('_', ' ', $title));
+$title = $title == 'Index' ? 'หน้าแรก' : $title;
+$title = $title == 'Dashboard' ? 'หน้าแอดมิน' : $title;
+$title = $title == 'Order List' ? 'รายการสั่งซื้อ' : $title;
+$title = $title == 'Cat List' ? 'รายการแมว' : $title;
+$title = $title == 'Cat Cart' ? 'ตะกร้าสินค้า' : $title;
+$title = $title == 'Cat Shop' ? 'ตลาดแมว' : $title;
+$title = $title == 'Cat Detail' ? 'รายละเอียดน้องแมว' : $title;
+$title = $title == 'Edit Cat' ? 'แก้ไขข้อมูลแมว' : $title;
+$title = $title == 'Insert Cat' ? 'เพิ่มแมว' : $title;
+$title = $title == 'About Us' ? 'เกี่ยวกับเรา' : $title;
+$title = $title == 'Contact' ? 'ติดต่อเรา' : $title;
+$title = $title == 'History' ? 'ประวัติการสั่งซื้อ' : $title;
+$title = $title == 'Payment List' ? 'รายการชำระเงิน' : $title;
+
 
 ?>
 
@@ -12,7 +30,8 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JARAREN CAT SHOP</title>
+    <title>JARAREN CAT SHOP | <?php echo $title; ?></title>
+    <link rel="icon" type="image/x-icon" href="images/icon/cat-icon.png" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
@@ -24,6 +43,13 @@ session_start();
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/layout.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.css" rel="stylesheet" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.js"></script>
+
+
 </head>
 <style>
     .bi-person-circle {
@@ -76,23 +102,39 @@ session_start();
         <hr style="color: white;">
         <ul class="nav nav-pills flex-column mb-auto">
             <li class="nav-item">
-                <a href="index.php" class="nav-link ">
-                    <h4><i class="bi bi-house-door-fill" style="color: #989696;"></i><span class="text">&nbsp;&nbsp;</span><span class="fs-5 text" style="color: #989696;">หน้าแรก</span></h4>
+                <a href="index.php" class="nav-link <?= $title == 'หน้าแรก' ? 'active bg-light' : ''; ?>">
+                    <h4><i class="bi bi-house-door-fill me-3" style="color: #989696;"></i><span class="fs-5 text" style="color: #989696;">หน้าแรก</span></h4>
                 </a>
             </li>
             <?php
             if (isset($_SESSION['loggedin']) && $_SESSION['role'] == 'admin') {
-                echo '<li>
-                <a href="insert_cat.php" class="nav-link " style="color: #989696;">
-                    <h4><i class="bi bi-heart-fill"></i><span class="text">&nbsp;&nbsp;</span><span class="fs-5 text">เพิ่มแมว</span></h4>
-                </a>
-            </li>';
+            ?>
+                <li>
+                    <a href="dashboard.php" class="nav-link <?= $title == 'หน้าแอดมิน' ? 'active bg-light' : ''; ?> " style="color: #989696;">
+                        <h4><i class="bi bi-menu-button-wide-fill me-3"></i><span class="fs-5 text">หน้าแอดมิน</span></h4>
+                    </a>
+                </li>
+                <li>
+                    <a href="insert_cat.php" class="nav-link <?= $title == 'เพิ่มแมว' ? 'active bg-light' : ''; ?> " style="color: #989696;">
+                        <h4><i class="bi bi-plus-circle me-3"></i><span class="fs-5 text">เพิ่มแมว</span></h4>
+                    </a>
+                </li>
+            <?php
+            }
+            if (isset($_SESSION['loggedin'])) {
+            ?>
+                <li>
+                    <a href="history.php" class="nav-link <?= $title == 'ประวัติการสั่งซื้อ' ? 'active bg-light' : ''; ?> " style="color: #989696;">
+                        <h4><i class="bi bi-cart4 me-3"></i><span class="fs-5 text">ประวัติการสั่งซื้อ</span></h4>
+                    </a>
+                </li>
+            <?php
             }
             ?>
 
             <li>
-                <a href="cat_shop.php" class="nav-link " style="color: #989696;">
-                    <h4><i class="bi bi-shop-window"></i><span class="text">&nbsp;&nbsp;</span><span class="fs-5 text">ตลาดแมว</span></h4>
+                <a href="cat_shop.php" class="nav-link <?= $title == 'ตลาดแมว' ? 'active bg-light' : ''; ?> " style="color: #989696;">
+                    <h4><i class="bi bi-shop-window me-3"></i><span class="fs-5 text">ตลาดแมว</span></h4>
                 </a>
             </li>
             <br>
@@ -125,13 +167,13 @@ session_start();
         </h5>
         <ul class="nav nav-pills flex-column ">
             <li>
-                <a href="aboutme.php" class="nav-link " style="color: #989696;">
-                    <h4><i class="bi bi-info-circle-fill"></i><span class="text">&nbsp;&nbsp;</span><span class="fs-5 text">เกี่ยวกับเรา</span></h4>
+                <a href="about_us.php" class="nav-link <?= $title == 'เกี่ยวกับเรา' ? 'active bg-light' : ''; ?> " style="color: #989696;">
+                    <h4><i class="bi bi-info-circle-fill me-3"></i><span class="fs-5 text">เกี่ยวกับเรา</span></h4>
                 </a>
             </li>
             <li>
-                <a href="contact.php" class="nav-link " style="color: #989696;">
-                    <h4><i class="bi bi-telephone-fill"></i><span class="text">&nbsp;&nbsp;</span><span class="fs-5 text">ติดต่อฉัน</span></h4>
+                <a href="contact.php" class="nav-link <?= $title == 'ติดต่อเรา' ? 'active bg-light' : ''; ?> " style="color: #989696;">
+                    <h4><i class="bi bi-telephone-fill me-3"></i><span class="fs-5 text">ติดต่อเรา</span></h4>
                 </a>
             </li>
         </ul>
@@ -192,13 +234,28 @@ session_start();
         searchForm.addEventListener("submit", (e) => {
             e.preventDefault();
             const searchValue = searchInput.value;
-            if (searchValue.trim() != "") {
-                window.location.href = `cat_shop.php?search=${searchValue}`;
-            }
+            window.location.href = `cat_shop.php?search=${searchValue}`;
         });
-        
-
     </script>
 </body>
-
+<script>
+    $(document).ready(function() {
+        $('#example').DataTable({
+            "language": {
+                "lengthMenu": "แสดง _MENU_ รายการ ต่อหน้า",
+                "zeroRecords": "ไม่พบข้อมูล",
+                "info": "แสดงหน้า _PAGE_ จาก _PAGES_",
+                "infoEmpty": "ไม่มีข้อมูล",
+                "infoFiltered": "(filtered from _MAX_ total records)",
+                "search": "ค้นหา",
+                "paginate": {
+                    "first": "หน้าแรก",
+                    "last": "หน้าสุดท้าย",
+                    "next": "ถัดไป",
+                    "previous": "ก่อนหน้า"
+                }
+            }
+        });
+    });
+</script>
 </html>
